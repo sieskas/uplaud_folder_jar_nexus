@@ -1,0 +1,40 @@
+{
+	"info": {
+		"_postman_id": "9c22c61f-154f-4672-b6d1-0775e9f7abe1",
+		"name": "nexus",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "upload",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"Passw0rd!\",\r\n    \"url\": \"http://localhost:8081/service/rest/v1/components?repository=test\",\r\n    \"path\": \"E:\\\\lib\",\r\n    \"groupId\": \"com.example\",\r\n    \"artifactId\": \"myapp\",\r\n    \"version\": \"1.0.0\",\r\n    \"prefix\": \"tomcat\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/nexus/v1/upload",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"nexus",
+						"v1",
+						"upload"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

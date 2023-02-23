@@ -15,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
-import wiremock.javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping(API_BASE_PATH)
@@ -29,12 +28,11 @@ public class UploadController {
       value = API_END_POINT_UPLOAD,
       produces = {APPLICATION_JSON_VALUE},
       consumes = {APPLICATION_JSON_VALUE})
-  public ResponseEntity<UploadMapper> doCreateInvoice(
+  public ResponseEntity<String> doUpload(
       @RequestHeader MultiValueMap<String, String> headers,
-      @RequestBody UploadRequestResource requestResource,
-      HttpServletRequest httpServletRequest) {
+      @RequestBody UploadRequestResource requestResource) {
 
-    uploadServiceImpl.upload(mapper.toModel(requestResource));
-    return new ResponseEntity<>(HttpStatus.CREATED);
+    return new ResponseEntity<>(
+        uploadServiceImpl.upload(mapper.toModel(requestResource)), HttpStatus.OK);
   }
 }
