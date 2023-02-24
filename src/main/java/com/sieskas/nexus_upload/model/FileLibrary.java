@@ -7,8 +7,8 @@ import lombok.Data;
 @Builder
 public class FileLibrary {
 
-  public String path;
-  public String version;
-  public String name;
-  public String extension;
+	public String path;
+	public String version;
+	public String name;
+	public String extension;
 }

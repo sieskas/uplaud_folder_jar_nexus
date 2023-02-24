@@ -6,46 +6,76 @@ import com.sieskas.nexus_upload.v1.controller.resources.UploadRequestResource;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
 @Mapper(componentModel = "spring")
-public interface UploadMapper {
+public abstract class UploadMapper {
 
-  @Mapping(source = "path", target = "files", qualifiedByName = "findFiles")
-  UploadRequest toModel(UploadRequestResource requestResource);
+	@Mapping(source = "path", target = "files", qualifiedByName = "findFiles")
+	public abstract UploadRequest toModel(UploadRequestResource requestResource);
 
-  @Named("findFiles")
-  default List<FileLibrary> getFilesInfo(String path) {
-    List<FileLibrary> result = new ArrayList<>();
+	@Named("findFiles")
+	protected List<FileLibrary> getFileLibraries(String path) {
+		List<FileLibrary> fileLibraries = new ArrayList<>();
+		File directory = new File(path);
+		if (!directory.isDirectory()) {
+			throw new IllegalArgumentException("Invalid directory path: " + path);
+		}
+		for (File file : directory.listFiles()) {
+			if (file.isFile()) {
+				FileLibrary fileLibrary = FileLibrary.builder().build();
+				fileLibrary.setName(file.getName());
+				fileLibrary.setPath(file.getAbsolutePath());
+				String extension = getFileExtension(file);
+				fileLibrary.setExtension(extension);
+				String fileNameWithoutExtension = removeFileExtension(file.getName());
+				fileLibrary.setVersion(getVersionFromFileName(fileNameWithoutExtension));
+				fileLibrary.setName(extractName(fileNameWithoutExtension));
+				fileLibraries.add(fileLibrary);
+			}
+		}
+		return fileLibraries;
+	}
 
-    File directory = new File(path);
+	private String getFileExtension(File file) {
+		String name = file.getName();
+		int lastIndexOfDot = name.lastIndexOf(".");
+		if (lastIndexOfDot == -1) {
+			return ""; // no extension found
+		}
+		return name.substring(lastIndexOfDot + 1);
+	}
 
-    if (directory.exists() && directory.isDirectory()) {
-      File[] files = directory.listFiles();
+	private String removeFileExtension(String fileName) {
+		int lastIndexOfDot = fileName.lastIndexOf(".");
+		if (lastIndexOfDot == -1) {
+			return fileName; // no extension found
+		}
+		return fileName.substring(0, lastIndexOfDot);
+	}
 
-      for (File file : files) {
-        String fileName = file.getName();
+	private String getVersionFromFileName(String fileName) {
+		Pattern pattern = Pattern.compile("-\\d+(\\.\\d+)*[a-zA-Z-]*");
+		Matcher matcher = pattern.matcher(fileName);
+		while (matcher.find()) {
+			String version = matcher.group().substring(1);
+			if (version.matches("^\\d+(\\.\\d+)*(-[a-zA-Z0-9]+)*$")) {
+				return version;
+			}
+		}
+		return "1.0.0";
+	}
 
-        int extensionIndex = fileName.lastIndexOf(".");
-        String nameWithoutExtension =
-            extensionIndex > 0 ? fileName.substring(0, extensionIndex) : fileName;
-
-        String[] nameAndVersion = nameWithoutExtension.split("-", 2);
-        String name = nameAndVersion[0];
-        String version = nameAndVersion.length > 1 ? nameAndVersion[1] : "1.0.0";
-
-        result.add(
-            FileLibrary.builder()
-                .path(file.getAbsolutePath())
-                .version(version)
-                .name(name)
-                .extension(extensionIndex > 0 ? fileName.substring(extensionIndex) : "")
-                .build());
-      }
-    }
-
-    return result;
-  }
+	private String extractName(String str) {
+		Pattern pattern = Pattern.compile("^.*?(?=-\\d)");
+		Matcher matcher = pattern.matcher(str);
+		if (matcher.find()) {
+			return matcher.group();
+		}
+		return str;
+	}
 }

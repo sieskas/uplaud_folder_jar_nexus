@@ -20,19 +20,19 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(API_BASE_PATH)
 @RequiredArgsConstructor
 public class UploadController {
-  private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-  private final UploadServiceImpl uploadServiceImpl;
-  private final UploadMapper mapper;
+	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+	private final UploadServiceImpl uploadServiceImpl;
+	private final UploadMapper mapper;
 
-  @PostMapping(
-      value = API_END_POINT_UPLOAD,
-      produces = {APPLICATION_JSON_VALUE},
-      consumes = {APPLICATION_JSON_VALUE})
-  public ResponseEntity<String> doUpload(
-      @RequestHeader MultiValueMap<String, String> headers,
-      @RequestBody UploadRequestResource requestResource) {
+	@PostMapping(
+			value = API_END_POINT_UPLOAD,
+			produces = {APPLICATION_JSON_VALUE},
+			consumes = {APPLICATION_JSON_VALUE})
+	public ResponseEntity<String> doUpload(
+			@RequestHeader MultiValueMap<String, String> headers,
+			@RequestBody UploadRequestResource requestResource) {
 
-    return new ResponseEntity<>(
-        uploadServiceImpl.upload(mapper.toModel(requestResource)), HttpStatus.OK);
-  }
+		return new ResponseEntity<>(
+				uploadServiceImpl.upload(mapper.toModel(requestResource)), HttpStatus.OK);
+	}
 }

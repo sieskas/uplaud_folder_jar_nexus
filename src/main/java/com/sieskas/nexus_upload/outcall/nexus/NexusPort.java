@@ -4,5 +4,5 @@ import com.sieskas.nexus_upload.model.UploadRequest;
 
 public interface NexusPort {
 
-  void upload(UploadRequest uploadRequest);
+	void upload(UploadRequest uploadRequest);
 }

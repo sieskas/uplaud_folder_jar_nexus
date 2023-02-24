@@ -12,13 +12,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UploadRequest {
 
-  public String username;
-  public String password;
-  public String url;
-  public String path;
-  public List<FileLibrary> files;
-  public String groupId;
-  public String prefix;
-  public String artifactId;
-  public String version;
+	public String username;
+	public String password;
+	public String url;
+	public String path;
+	public List<FileLibrary> files;
+	public String groupId;
+	public String prefix;
+	public String artifactId;
+	public String version;
 }

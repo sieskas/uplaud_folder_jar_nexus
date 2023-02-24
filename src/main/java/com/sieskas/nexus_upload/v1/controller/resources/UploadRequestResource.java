@@ -12,27 +12,27 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UploadRequestResource {
 
-  @JsonProperty("username")
-  public String username;
+	@JsonProperty("username")
+	public String username;
 
-  @JsonProperty("password")
-  public String password;
+	@JsonProperty("password")
+	public String password;
 
-  @JsonProperty("url")
-  public String url;
+	@JsonProperty("url")
+	public String url;
 
-  @JsonProperty("path")
-  public String path;
+	@JsonProperty("path")
+	public String path;
 
-  @JsonProperty("groupId")
-  public String groupId;
+	@JsonProperty("groupId")
+	public String groupId;
 
-  @JsonProperty("artifactId")
-  public String artifactId;
+	@JsonProperty("artifactId")
+	public String artifactId;
 
-  @JsonProperty("prefix")
-  public String prefix;
+	@JsonProperty("prefix")
+	public String prefix;
 
-  @JsonProperty("version")
-  public String version;
+	@JsonProperty("version")
+	public String version;
 }

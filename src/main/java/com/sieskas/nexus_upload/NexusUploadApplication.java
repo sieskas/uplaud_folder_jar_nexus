@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class NexusUploadApplication {
 
-  public static void main(String[] args) {
-    SpringApplication.run(NexusUploadApplication.class, args);
-  }
+	public static void main(String[] args) {
+		SpringApplication.run(NexusUploadApplication.class, args);
+	}
 }
